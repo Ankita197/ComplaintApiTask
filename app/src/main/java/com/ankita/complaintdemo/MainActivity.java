@@ -10,12 +10,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.ankita.complaintdemo.adapter.ItemComplaintAdapter;
 import com.ankita.complaintdemo.repository.APIClient;
 import com.ankita.complaintdemo.repository.APIInterface;
 import com.ankita.complaintdemo.repository.CreateResponse;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
@@ -27,11 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvItemComplaint;
     APIInterface apiInterface;
-    ItemComplaintAdapter itemComplaintAdapter;
+    ItemComplaintAdapter itemComplaintAdapter,itemComplaintAdapter1;
     ArrayList<CreateResponse.User> userArrayList;
     CreateResponse.User user;
     boolean isLoading=false;
     ProgressBar pbLoading;
+    TabLayout tabLayout;
     int page_no=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,27 @@ public class MainActivity extends AppCompatActivity {
         init();
         callApi(page_no);
         initScrollListener();
+tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        if(tab.getPosition()==1){
+            itemComplaintAdapter1=new ItemComplaintAdapter(MainActivity.this,ItemComplaintAdapter.getPandingList());
+            rvItemComplaint.setAdapter(itemComplaintAdapter1);
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+});
+
+
     }
     private void initScrollListener() {
         rvItemComplaint.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -138,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         itemComplaintAdapter=new ItemComplaintAdapter(this,userArrayList);
         rvItemComplaint.setAdapter(itemComplaintAdapter);
         pbLoading=findViewById(R.id.pbLoading);
+        tabLayout=findViewById(R.id.tabLayout);
 
     }
 }

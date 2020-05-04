@@ -16,12 +16,21 @@ import java.util.ArrayList;
 
 public class ItemComplaintAdapter extends RecyclerView.Adapter<ItemComplaintAdapter.ItemViewHolder> {
 
+    private static ArrayList<CreateResponse.User> pandingList=new ArrayList<>();
     Context context;
     ArrayList<CreateResponse.User> userList;
 
     public ItemComplaintAdapter(Context context, ArrayList<CreateResponse.User> userList) {
         this.context = context;
         this.userList = userList;
+    }
+
+    public static ArrayList<CreateResponse.User> getPandingList() {
+        return pandingList;
+    }
+
+    public static void setPandingList(ArrayList<CreateResponse.User> pandingList) {
+        ItemComplaintAdapter.pandingList = pandingList;
     }
 
     @NonNull
@@ -37,6 +46,9 @@ public class ItemComplaintAdapter extends RecyclerView.Adapter<ItemComplaintAdap
         holder.tvDate.setText(userList.get(position).getCreatedDate());
         holder.tvSubjectValue.setText(userList.get(position).getDetail());
        int i= userList.get(position).getCallStatus();
+       if(i==1){
+           pandingList.add(userList.get(position));
+       }
        setStatusColor(i,holder);
     }
 
